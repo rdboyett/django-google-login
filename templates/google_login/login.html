@@ -1,0 +1,36 @@
+
+<script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+    
+<link href="/static/google_login/css/google-login-style.css" rel="stylesheet">
+<script src="/static/google_login/js/center_google_login.js"></script>
+
+<div id="google-login-clicker">Sign In</div>
+<div id="google-login-shade" style="display: none;"></div>
+<div id="google_login_form" style="display: none;">
+    <div id="google-login-title">Account Login</div>
+    <a href="#" class="zocial googleplus">Sign in with Google</a>
+    <form action="/google/ajaxAuth/" method="post">{% csrf_token %}
+        <ul>
+            <li><input id="google-input" type="text" name="username" value="" id="username" placeholder="Username..." autofocus></li>
+            <li><input class="google-input" type="password" name="password" value="" id="password" placeholder="Password..."></li>
+            <button id="google-sign-in">SIGN IN</button>
+            <button id="google-register">REGISTER</button>
+        </ul>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

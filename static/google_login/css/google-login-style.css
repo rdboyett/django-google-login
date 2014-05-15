@@ -1,0 +1,245 @@
+
+.zocial.googleplus {
+background-color: #dd4b39;
+}
+
+body .zocial {
+margin: 8px 4px;
+font-size: 13px;
+}
+
+.zocial, a.zocial {
+border: 1px solid #777;
+border-color: rgba(0,0,0,0.2);
+border-bottom-color: #333;
+border-bottom-color: rgba(0,0,0,0.4);
+color: #fff;
+-moz-box-shadow: inset 0 0.08em 0 rgba(255,255,255,0.4), inset 0 0 0.1em rgba(255,255,255,0.9);
+-webkit-box-shadow: inset 0 0.08em 0 rgba(255,255,255,0.4), inset 0 0 0.1em rgba(255,255,255,0.9);
+box-shadow: inset 0 0.08em 0 rgba(255,255,255,0.4), inset 0 0 0.1em rgba(255,255,255,0.9);
+cursor: pointer;
+display: inline-block;
+font: bold 100%/2.1 "Lucida Grande", Tahoma, sans-serif;
+padding: 0 .95em 0 0;
+text-align: center;
+text-decoration: none;
+text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+white-space: nowrap;
+-moz-user-select: none;
+-webkit-user-select: none;
+user-select: none;
+position: relative;
+-moz-border-radius: .3em;
+-webkit-border-radius: .3em;
+border-radius: .3em;
+}
+
+.zocial {
+background-image: -moz-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.05) 49%, rgba(0,0,0,.05) 51%, rgba(0,0,0,.1));
+background-image: -ms-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.05) 49%, rgba(0,0,0,.05) 51%, rgba(0,0,0,.1));
+background-image: -o-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.05) 49%, rgba(0,0,0,.05) 51%, rgba(0,0,0,.1));
+background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,.1)), color-stop(49%, rgba(255,255,255,.05)), color-stop(51%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+background-image: -webkit-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.05) 49%, rgba(0,0,0,.05) 51%, rgba(0,0,0,.1));
+background-image: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.05) 49%, rgba(0,0,0,.05) 51%, rgba(0,0,0,.1));
+}
+
+.zocial, a.zocial {
+border: 1px solid #777;
+border-color: rgba(0,0,0,0.2);
+border-bottom-color: #333;
+border-bottom-color: rgba(0,0,0,0.4);
+color: #fff;
+-moz-box-shadow: inset 0 0.08em 0 rgba(255,255,255,0.4), inset 0 0 0.1em rgba(255,255,255,0.9);
+-webkit-box-shadow: inset 0 0.08em 0 rgba(255,255,255,0.4), inset 0 0 0.1em rgba(255,255,255,0.9);
+box-shadow: inset 0 0.08em 0 rgba(255,255,255,0.4), inset 0 0 0.1em rgba(255,255,255,0.9);
+cursor: pointer;
+display: inline-block;
+font: bold 100%/2.1 "Lucida Grande", Tahoma, sans-serif;
+padding: 0 .95em 0 0;
+text-align: center;
+text-decoration: none;
+text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+white-space: nowrap;
+-moz-user-select: none;
+-webkit-user-select: none;
+user-select: none;
+position: relative;
+-moz-border-radius: .3em;
+-webkit-border-radius: .3em;
+border-radius: .3em;
+}
+
+
+.zocial.googleplus:before {
+content: "g";
+}
+
+.zocial:before {
+content: "";
+border-right: 0.075em solid rgba(0,0,0,0.1);
+float: left;
+font: 120%/1.65 zocial;
+font-style: normal;
+font-weight: normal;
+margin: 0 0.5em 0 0;
+padding: 0 0.5em;
+text-align: center;
+text-decoration: none;
+text-transform: none;
+-moz-box-shadow: 0.075em 0 0 rgba(255,255,255,0.25);
+-webkit-box-shadow: 0.075em 0 0 rgba(255,255,255,0.25);
+box-shadow: 0.075em 0 0 rgba(255,255,255,0.25);
+-moz-font-smoothing: antialiased;
+-webkit-font-smoothing: antialiased;
+font-smoothing: antialiased;
+}
+
+html {
+font-family: "Helvetica Neue", sans-serif;
+}
+.zocial:hover, .zocial:focus {
+	background-image: -moz-linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
+	background-image: -ms-linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
+	background-image: -o-linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,.15)), color-stop(49%, rgba(255,255,255,.15)), color-stop(51%, rgba(0,0,0,.1)), to(rgba(0,0,0,.15)));
+	background-image: -webkit-linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
+	background-image: linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
+}
+
+#google_login_form{
+    font-family: "Helvetica Neue", sans-serif;
+    background: #FFF;
+    position: fixed;
+    width: 300px;
+    height: 270px;
+    top: 300px;
+    left: 200px;
+    z-index: 10001;
+    
+    text-align: center;
+    vertical-align: middle;
+    
+-webkit-box-shadow: 0px 5px 5px 0px #000;
+-moz-box-shadow: 0 5px 5px 0 #000;
+box-shadow: 0px 5px 5px 0px #000;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+
+}
+#google-login-shade{
+    background: #000000;
+    opacity: 0.6;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+}
+#google_login_form ul{
+display: block;
+list-style-type: none;
+-webkit-margin-before: 0em;
+-webkit-margin-after: 0em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 0px;
+}
+
+#google-login-title{
+    width: 100%;
+    height: 50px;
+    background: #F2F2F2;
+    color: #ADADAD;
+    font-size: 30px;
+    text-transform: capitalize;
+    line-height: 50px;
+    text-align: center;
+    margin-bottom: 10px;
+    
+-webkit-border-top-left-radius: 6px;
+-webkit-border-top-right-radius: 6px;
+-moz-border-radius-topleft: 6px;
+-moz-border-radius-topright: 6px;
+border-top-left-radius: 6px;
+border-top-right-radius: 6px;
+}
+
+#google_login_form input{
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+background-color: #FFF;
+border: 1px solid #CCC;
+color: #ADADAD;
+background-image: none;
+padding: 5px;
+font-size: 16px;
+line-height: 20px;
+margin: 5px;
+}
+#google_login_form input:focus{
+-webkit-box-shadow: 2px 2px 10px 0px #4486E2;
+-moz-box-shadow: 2px 2px 10px 0 #4486E2;
+box-shadow: 2px 2px 10px 0px #4486E2;
+}
+
+#google_login_form button{
+    margin: 5px;
+    margin-top: 15px;
+    display: inline-block;
+    padding: 10px;
+    color: #FFF;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+    opacity: 0.8;
+    cursor: pointer;
+}
+#google_login_form button:hover{opacity: 1;}
+
+#google-sign-in{
+    background-color: #3E85DD;
+}
+#google-register{
+    background-color: #E24444;
+}
+
+#google-login-clicker{
+    text-align: center;
+    padding: 10px;
+    background-color: #3CC948;
+    color: #FFF;
+    opacity: 0.8;
+    cursor: pointer;
+}
+#google-login-clicker:hover{opacity: 1;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

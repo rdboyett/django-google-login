@@ -1,0 +1,7 @@
+django
+easy_install --upgrade google-api-python-client
+
+change settings in "google_login.settings" for your project
+
+Add the following to your root urls:
+url(r'^google/', include('google_login.urls')),
