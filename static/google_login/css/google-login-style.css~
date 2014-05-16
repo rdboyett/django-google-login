@@ -106,7 +106,7 @@ font-family: "Helvetica Neue", sans-serif;
 	background-image: linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
 }
 
-#google_login_form, #google_register_form{
+#google_login_form{
     font-family: "Helvetica Neue", sans-serif;
     background: #FFF;
     position: fixed;

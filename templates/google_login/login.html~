@@ -9,20 +9,103 @@
 <div id="google-login-shade" style="display: none;"></div>
 <div id="google_login_form" style="display: none;">
     <div id="google-login-title">Account Login</div>
-    <a href="#" class="zocial googleplus">Sign in with Google</a>
-    <form action="/google/ajaxAuth/" method="post">{% csrf_token %}
+    <a href="/google/auth/" class="zocial googleplus">Sign in with Google</a>
+    <form>{% csrf_token %}
         <ul>
-            <li><input id="google-input" type="text" name="username" value="" id="username" placeholder="Username..." autofocus></li>
-            <li><input class="google-input" type="password" name="password" value="" id="password" placeholder="Password..."></li>
-            <button id="google-sign-in">SIGN IN</button>
-            <button id="google-register">REGISTER</button>
+            <li><div id="google-login-error">incorrect username or password</div></li>
+            <li><input id="google-username" type="text" name="username" value="" placeholder="Username..." autofocus></li>
+            <li><input id="google-password" type="password" name="password" value="" placeholder="Password..."></li>
+            <div id="google-sign-in" class="google-button">SIGN IN</div>
+            <div id="google-register" class="google-button">SIGN UP</div>
+        </ul>
+    </form>
+</div>
+
+<div id="google_register_form" style="display: none; width:400px;height:350px;">
+    <div id="google-login-title">Sign Up</div>
+    <a href="/google/auth/" class="zocial googleplus">Sign up with your Google account</a>
+    <form>
+        <ul>
+            <li><div id="google-login-error">incorrect username or password</div></li>
+            <li><input id="google-username" type="text" name="username" value="" placeholder="Username..." autofocus></li>
+            <li><input id="google-email" type="email" name="email" value="" placeholder="Email..."></li>
+            <li><input id="google-password1" type="password" name="password1" value="" placeholder="Password..."></li>
+            <li><input id="google-password2" type="password" name="password2" value="" placeholder="Retype password..."></li>
+            <div id="google-register" class="google-button">REGISTER</div>
         </ul>
     </form>
 </div>
 
 
 
+<script>
 
+$(document).ready(function(){
+    $("#google-sign-in").click(function(){
+        console.log('click');
+        var username = $("#google-username").val();
+        var password = $("#google-password").val();
+        checkUser(username, password);
+    });
+
+
+});
+
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
+    /************************** check login ****************************************************************************88*******/
+	function checkUser(username, password) {
+		//console.log('In tweetSubmit');
+            var csrftoken = getCookie('csrftoken');
+            var uri = "{% url 'google_login.views.ajaxAuth' %}";
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            
+            xhr.open("POST", uri, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Handle response.
+		            console.log(xhr.responseText);
+                    var data = JSON.parse(xhr.responseText)
+		            //console.log(data);
+		            if (data.error) {
+                        //alert(data.error);
+                        $("#google-login-error").fadeIn(600);
+                    }
+		            else{
+                        window.location.href="{% url 'google_login.views.success' %}"
+                    }
+                }
+            };
+	        xhr.timeout = 4000;
+	        xhr.ontimeout = function () { location.reload(); }
+            fd.append('username', username);
+            fd.append('password', password);
+            // Initiate a multipart/form-data upload
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.send(fd);
+	    //console.log( xhr._object);
+        }
+	
+</script>
 
 
 

@@ -6,7 +6,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('google_login.views',
     (r'^login/$', 'index'),
-    (r'^ajaxAuth/$', 'ajaxAuth'),
+    url(r'^ajaxAuth/$', 'ajaxAuth', name='ajaxAuth'),
     (r'^auth/$', 'auth'),
     (r'^oauth2callback/$', 'auth_return'),
     (r'^success/$', 'success'),

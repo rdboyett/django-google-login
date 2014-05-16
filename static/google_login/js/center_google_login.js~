@@ -14,7 +14,7 @@ $(document).ready(function(){
     });
 
 
-    $("#google-register").unbind('click').click(function(){
+    $("#google-login-clicker").unbind('click').click(function(){
         $("#google-login-shade").fadeIn(600);
         $("#google_register_form").fadeIn(600);
     });
