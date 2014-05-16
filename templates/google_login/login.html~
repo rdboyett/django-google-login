@@ -9,7 +9,7 @@
 <div id="google-login-shade" style="display: none;"></div>
 <div id="google_login_form" style="display: none;">
     <div id="google-login-title">Account Login</div>
-    <a href="/google/auth/" class="zocial googleplus">Sign in with Google</a>
+    <a href="#" class="zocial googleplus">Sign in with Google</a>
     <form action="/google/ajaxAuth/" method="post">{% csrf_token %}
         <ul>
             <li><input id="google-input" type="text" name="username" value="" id="username" placeholder="Username..." autofocus></li>

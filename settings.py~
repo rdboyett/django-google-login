@@ -19,6 +19,3 @@ LOGIN_SUCCESS = '/google/success/'
 
 #change to any random hashed sequence
 SECRET_KEY = 't(641aasfrv6^^-1sj$uzq(fskmd%+!33199$axb1hu(2i_2n='
-
-
-
