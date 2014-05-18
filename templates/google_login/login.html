@@ -3,36 +3,57 @@
 <script language="JavaScript" type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
     
 <link href="/static/google_login/css/google-login-style.css" rel="stylesheet">
-<script src="/static/google_login/js/center_google_login.js"></script>
 
 <div id="google-login-clicker">Sign In</div>
 <div id="google-login-shade" style="display: none;"></div>
 <div id="google_login_form" style="display: none;">
     <div id="google-login-title">Account Login</div>
     <a href="/google/auth/" class="zocial googleplus">Sign in with Google</a>
-    <form>{% csrf_token %}
+    <form id="google-authorization-form" autocomplete="off">{% csrf_token %}
         <ul>
             <li><div id="google-login-error">incorrect username or password</div></li>
-            <li><input id="google-username" type="text" name="username" value="" placeholder="Username..." autofocus></li>
-            <li><input id="google-password" type="password" name="password" value="" placeholder="Password..."></li>
-            <div id="google-sign-in" class="google-button">SIGN IN</div>
-            <div id="google-register" class="google-button">SIGN UP</div>
+            <li><div class="google-input-holder">
+                    <img src="/static/google_login/images/username_logo.png" alt="user"/>
+                    <input id="google-username" type="text" name="username" value="" placeholder="Username..." autofocus>
+            </div></li>
+            <li><div class="google-input-holder">
+                    <img src="/static/google_login/images/password_logo.png" alt="user"/>
+                    <input id="google-password" type="password" name="password" value="" placeholder="Password...">
+            </div></li>
+            <button id="google-sign-in" class="google-button">SIGN IN</button>
+            <button id="google-sign-up" class="google-button">SIGN UP</button>
         </ul>
     </form>
+    <div class="forgot-password">forgot my username or password</div>
 </div>
 
-<div id="google_register_form" style="display: none; width:400px;height:350px;">
+<div id="google_register_form" style="display: none; width:400px;height:360px;">
     <div id="google-login-title">Sign Up</div>
     <a href="/google/auth/" class="zocial googleplus">Sign up with your Google account</a>
-    <form>
+    <form id="google-registration-form" autocomplete="off">
+        <div id="register-check-username" class="register-check-good"></div>
+        <div id="register-check-email" class="register-check-good"></div>
+        <div id="register-check-password" class="register-check-good"></div>
         <ul>
-            <li><div id="google-login-error">incorrect username or password</div></li>
-            <li><input id="google-username" type="text" name="username" value="" placeholder="Username..." autofocus></li>
-            <li><input id="google-email" type="email" name="email" value="" placeholder="Email..."></li>
-            <li><input id="google-password" type="password" name="password" value="" placeholder="Password..."></li>
-            <div id="google-register" class="google-button">REGISTER</div>
+            <li><div id="username-register-error" class="error-panel"></div></li>
+            <li><div class="google-input-holder">
+                    <img src="/static/google_login/images/username_logo.png" alt="user"/>
+                    <input id="google-register-username" type="text" name="username" value="" placeholder="Username..." autofocus>
+            </div></li>
+            <li><div id="email-register-error" class="error-panel"></div></li>
+            <li><div class="google-input-holder">
+                    <img src="/static/google_login/images/email_logo.png" alt="user"/>
+                    <input id="google-register-email" type="email" name="email" value="" placeholder="Email...">
+            </div></li>
+            <li><div id="password-register-error" class="error-panel"></div></li>
+            <li><div class="google-input-holder">
+                    <img src="/static/google_login/images/password_logo.png" alt="user"/>
+                    <input id="google-register-password" type="password" name="password" value="" placeholder="Password...">
+            </div></li>
+            <button id="google-register-submit" class="google-button">REGISTER</button>
         </ul>
     </form>
+    <div class="forgot-password">forgot my username or password</div>
 </div>
 
 
@@ -40,8 +61,9 @@
 <script>
 
 $(document).ready(function(){
-    $("#google-sign-in").click(function(){
-        console.log('click');
+    $("#google-sign-in").click(function(e){
+        //console.log('click');
+        e.preventDefault();
         var username = $("#google-username").val();
         var password = $("#google-password").val();
         checkUser(username, password);
@@ -104,9 +126,90 @@ function getCookie(name) {
 	    //console.log( xhr._object);
         }
 	
+
+    /************************** check username ****************************************************************************88*******/
+	function doesUsernameExist(username) {
+		//console.log('In tweetSubmit');
+            var csrftoken = getCookie('csrftoken');
+            var uri = "{% url 'google_login.views.checkUsername' %}";
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            
+            xhr.open("POST", uri, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Handle response.
+		            //console.log(xhr.responseText);
+                    var data = JSON.parse(xhr.responseText)
+		            //console.log(data);
+		            if (data.error) {
+                        //alert(data.error);
+                    }
+		            else{
+                        if (data.exists == 'true'){
+                            $("#username-register-error").html('already exists');
+                            $("#username-register-error").fadeIn(600);
+                            $("#google-register-username").addClass('register-input-error');
+                            //console.log(top);
+                            setCheckSignalPosition();
+                            $("#register-check-username").addClass('register-check-error');
+                            $("#register-check-username").removeClass('register-check-good');
+                            $("#register-check-username").fadeIn(600);
+                        }
+                    }
+                }
+            };
+	        xhr.timeout = 4000;
+	        xhr.ontimeout = function () { location.reload(); }
+            fd.append('username', username);
+            // Initiate a multipart/form-data upload
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.send(fd);
+	    //console.log( xhr._object);
+        }
+	
+
+    /************************** submit registration ****************************************************************************88*******/
+	function submitRegistration() {
+		//console.log('In submitRegistration');
+            var csrftoken = getCookie('csrftoken');
+            var uri = "{% url 'google_login.views.submitRegistration' %}";
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            
+            xhr.open("POST", uri, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Handle response.
+		            //console.log(xhr.responseText);
+                    var data = JSON.parse(xhr.responseText)
+		            //console.log(data);
+		            if (data.error) {
+                        alert(data.error);
+                    }
+		            else{
+                        window.location.href="{% url 'google_login.views.success' %}"
+                    }
+                }
+            };
+	        xhr.timeout = 4000;
+	        xhr.ontimeout = function () { location.reload(); }
+            fd.append('username', $("#google-register-username").val());
+            fd.append('email', $("#google-register-email").val());
+            fd.append('password', $("#google-register-password").val());
+            // Initiate a multipart/form-data upload
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.send(fd);
+	    //console.log( xhr._object);
+        }
+	
+
+
+
 </script>
 
 
+<script src="/static/google_login/js/center_google_login.js"></script>
 
 
 

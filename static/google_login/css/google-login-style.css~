@@ -106,12 +106,12 @@ font-family: "Helvetica Neue", sans-serif;
 	background-image: linear-gradient(rgba(255,255,255,.15) 49%, rgba(0,0,0,.1) 51%, rgba(0,0,0,.15));
 }
 
-#google_login_form{
+#google_login_form, #google_register_form{
     font-family: "Helvetica Neue", sans-serif;
     background: #FFF;
     position: fixed;
-    width: 300px;
-    height: 270px;
+    width: 350px;
+    height: 300px;
     top: 300px;
     left: 200px;
     z-index: 10001;
@@ -167,22 +167,47 @@ border-top-right-radius: 6px;
 }
 
 #google_login_form input, #google_register_form input{
+display:inline-block;
 -webkit-border-radius: 6px;
 -moz-border-radius: 6px;
 border-radius: 6px;
 background-color: #FFF;
-border: 1px solid #CCC;
-color: #ADADAD;
+border: none;
+color: #393939;
 background-image: none;
 padding: 5px;
 font-size: 16px;
 line-height: 20px;
-margin: 5px;
 }
-#google_login_form input:focus, #google_register_form input:focus{
--webkit-box-shadow: 2px 2px 10px 0px #4486E2;
--moz-box-shadow: 2px 2px 10px 0 #4486E2;
-box-shadow: 2px 2px 10px 0px #4486E2;
+.google-input-holder:hover{
+-webkit-box-shadow: 2px 2px 2px 0px #CCC;
+-moz-box-shadow: 2px 2px 2px 0 #CCC;
+box-shadow: 2px 2px 2px 0px #CCC;
+}
+textarea:focus, input:focus{
+    outline: 0;
+}
+.google-input-holder{
+    padding: 0;
+    margin: 5px;
+    width:250px;
+    border:1px solid #CCC;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+}
+.google-input-holder img{
+    display:inline-block;
+    vertical-align: middle;
+    padding:0 10px 0 10px;
+    width: 20px;
+    border-right:1px solid #CCC;
+}
+#google_login_form .google-input-holder{
+    margin-left: 50px;
+}
+#google_register_form .google-input-holder{
+    margin-left: 75px;
 }
 
 .google-button{
@@ -190,7 +215,7 @@ box-shadow: 2px 2px 10px 0px #4486E2;
     margin-top: 15px;
     display: inline-block;
     padding: 10px;
-    width: 65px;
+    width: 75px;
     color: #FFF;
     font-size: 12px;
     font-weight: bold;
@@ -208,7 +233,7 @@ border-radius: 6px;
 #google-sign-in{
     background-color: #3E85DD;
 }
-#google-register{
+#google-sign-up, #google-register-submit{
     background-color: #E24444;
 }
 
@@ -222,21 +247,69 @@ border-radius: 6px;
 }
 #google-login-clicker:hover{opacity: 1;}
 
-#google-login-error{
+#google-login-error, .error-panel{
     display: none;
     color: #E24444;
     font-size: 10px;
     font-weight: bold;
 }
+.forgot-password{
+    position:absolute;
+    bottom:10px;
+    left: 50px;
+    color: #E24444;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+}
+.forgot-password:hover{opacity:1;}
+#google_login_form .forgot-password{left:94px;}
+#google_register_form .forgot-password{left:119px;}
 
 
+.register-check-error{
+    display:none;
+    width:20px;
+    height:20px;
+	background: url("../images/twitter_web_sprite_icons.png") center no-repeat;
+	background-position: -95px -505px;
+    vertical-align:middle;
+}
 
+.register-check-good{
+    display:none;
+    width:20px;
+    height:20px;
+	background: url("../images/twitter_web_sprite_icons.png") center no-repeat;
+	background-position: 6px -685px;
+    vertical-align:middle;
+}
 
-
-
-
-
-
+#register-check-username{
+    position: absolute;
+    top:122px;
+    right:78px;
+}
+#register-check-email{
+    position: absolute;
+    top:162px;
+    right:78px;
+}
+#register-check-password{
+    position: absolute;
+    top:203px;
+    right:78px;
+}
+/*
+#google-username{
+    padding-left: 25px !important;
+	background-image: url("../images/username_logo.png") !important;
+    background-position: left;
+    background-repeat:no-repeat;
+    background-size:20px;
+}
+*/
 
 
 

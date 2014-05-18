@@ -65,8 +65,8 @@ def index(request):
 
 def ajaxAuth(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST['username'].strip()
+        password = request.POST['password'].strip()
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -179,14 +179,56 @@ def test(request):
 
 
 
+#-------------------------- Ajax calls -------------------------------------------
+def checkUsername(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        if User.objects.filter(username=username):
+            data = {'exists':'true'}
+        else:
+            data = {'exists':'false'}
+    else:
+        data = {'error':'Did not post correctly'}
+    return HttpResponse(json.dumps(data))
 
 
 
 
+def submitRegistration(request):
+    if request.method == 'POST':
+        username = request.POST['username'].strip()
+        email = request.POST['email'].strip()
+        password = request.POST['password'].strip()
+
+        if User.objects.filter(username=username):
+            data = {'error':'This username is already taken.'}
+        elif User.objects.filter(email=email):
+            data = {'error':'This email is already used with another account.'}
+        else:
+            user = User.objects.create(
+                username = username,
+                email = email,
+                password = password,
+            )
+            
+            #check to see if user is logged in
+            if user:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, user)
+                
+            request.session['user_id'] = user.id
+            request.session.set_expiry(604800)
+            data = {'success':'success'}
+
+    else:
+        data = {'error':'Did not post correctly'}
+    return HttpResponse(json.dumps(data))
 
 
-
-
+#ToDo: Allow users to login with username or email
+# During registration add the ajax check for the email already exists
+# Add the forgot username or password
+# Add the separate google account from user
 
 
 
