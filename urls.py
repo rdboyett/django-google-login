@@ -10,10 +10,13 @@ urlpatterns += patterns('google_login.views',
     (r'^oauth2callback/$', 'auth_return'),
     (r'^success/$', 'success'),
     (r'^error/$', 'error'),
+    (r'^forgot/(?P<forgotID>\d+)/$', 'forgotPassword'),
 
 #------------------ajax calls -------------------------------------
     url(r'^ajaxAuth/$', 'ajaxAuth', name='ajaxAuth'),
     url(r'^checkUsername/$', 'checkUsername', name='checkUsername'),
     url(r'^submitRegistration/$', 'submitRegistration', name='submitRegistration'),
+    url(r'^doesEmailExist/$', 'doesEmailExist', name='doesEmailExist'),
+    url(r'^submitPasswordForgot/$', 'submitPasswordForgot', name='submitPasswordForgot'),
     
 )

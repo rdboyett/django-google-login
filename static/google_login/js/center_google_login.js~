@@ -11,6 +11,7 @@ $(document).ready(function(){
         $("#google-login-shade").fadeOut(600);
         $("#google_login_form").fadeOut(600);
         $("#google_register_form").fadeOut(600);
+        $("#google_forgot_form").fadeOut(600);
     });
 
 
@@ -20,6 +21,40 @@ $(document).ready(function(){
         $("#google_register_form").fadeIn(600);
     });
     
+    
+    $(".forgot-password").click(function(){
+        $("#google_login_form").fadeOut(600);
+        $("#google_register_form").fadeOut(600);
+        $("#google_forgot_form").fadeIn(600);
+    });
+
+    $("#google-forgot-submit").click(function(e){
+            e.preventDefault();
+            var value = $("#google-forgot-email").val();
+            var atpos=value.indexOf("@");
+            var dotpos=value.lastIndexOf(".");
+            if (atpos<1 || dotpos<atpos+2 || dotpos+2>=value.length)
+              {
+                $("#email-forgot-error").html('not a valid email');
+                $("#email-forgot-error").fadeIn(600);
+                    $("#forgot-check-email").css({'top':(($("#google-forgot-email").position().top)+7)+"px"});
+                    $("#forgot-check-email").addClass('register-check-error');
+                    $("#forgot-check-email").removeClass('register-check-good');
+                    $("#forgot-check-email").fadeIn(600);
+              }else{
+                    $("#email-forgot-error").fadeOut(600);
+                    //$(this).attr('style','background-color:#BDFFBD;');
+                    $("#forgot-check-email").fadeOut(600, function(){
+                        $("#forgot-check-email").css({'top':(($("#google-forgot-email").position().top)+7)+"px"});
+                        $("#forgot-check-email").removeClass('register-check-error');
+                        $("#forgot-check-email").addClass('register-check-good');
+                        $("#forgot-check-email").fadeIn(600);
+                    });
+                    submitPasswordForgot(value);
+              }
+        
+    });
+
     $("#google-register-submit").click(function(e){
         e.preventDefault();
         var submit = true;
@@ -41,7 +76,7 @@ $(document).ready(function(){
             //todo: put in a check to see if the username already exists
 
 
-            if (value.length > 5){
+            if (value.length > 5 && value.length < 30){
                 if( /[^a-zA-Z0-9]/.test( value ) ) {
                     $("#username-register-error").html('letters and numbers only');
                     $("#username-register-error").fadeIn(600);
@@ -110,6 +145,7 @@ $(document).ready(function(){
                         $("#register-check-email").addClass('register-check-good');
                         $("#register-check-email").fadeIn(600);
                     });
+                    doesEmailExist(value);
                     $(this).unbind('keyup');
               }
         }else{
@@ -195,10 +231,12 @@ $( window ).resize(function() {
     }
     
     function resizeGoogleLoginPopup() {
-	resizeTop($("#google_login_form"));
-	resizeLeft($("#google_login_form"));
-	resizeTop($("#google_register_form"));
-	resizeLeft($("#google_register_form"));
+	    resizeTop($("#google_login_form"));
+	    resizeLeft($("#google_login_form"));
+	    resizeTop($("#google_register_form"));
+	    resizeLeft($("#google_register_form"));
+	    resizeTop($("#google_forgot_form"));
+	    resizeLeft($("#google_forgot_form"));
     }
 
 
@@ -206,7 +244,7 @@ function keyChangeInput(e){
     var inputName = e.attr('name');
     var value = e.val();
         if (inputName == 'username'){
-            if (value.length > 5){
+            if (value.length > 5 && value.length < 30){
                 if( /[^a-zA-Z0-9]/.test( value ) ) {
                     $("#username-register-error").html('letters and numbers only');
                     $("#username-register-error").fadeIn(600);

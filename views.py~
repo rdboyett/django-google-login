@@ -4,6 +4,7 @@ ROOT_PATH = os.path.dirname(__file__)
 import json
 import logging
 import httplib2
+from datetime import datetime, timedelta
 
 from django.shortcuts import render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -12,8 +13,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.utils import simplejson
+from django.core.mail import send_mail
+from django.utils import timezone
 
-from google_login.models import CredentialsModel
+from google_login.models import CredentialsModel, GoogleUserInfo, ForgottenPassword
 from google_login import settings
 from forms import MyRegistrationForm
 
@@ -68,6 +71,11 @@ def ajaxAuth(request):
         username = request.POST['username'].strip()
         password = request.POST['password'].strip()
         user = authenticate(username=username, password=password)
+
+        if user is None and User.objects.filter(email=username):
+            userEmail = User.objects.get(email=username)
+            user = authenticate(username=userEmail.username, password=password)
+
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -107,6 +115,11 @@ def auth_return(request):
     google_email = user_info.get('email')
     firstName = user_info.get('given_name')
     lastName = user_info.get('family_name')
+    google_id = user_info.get('id')
+    googlePlus = user_info.get('link')
+    language = user_info.get('locale')
+    googleAvatar = user_info.get('picture')
+    gender = user_info.get('gender')
         
     emailEnding = google_email.split("@")[1]
     userName = "@"+google_email.split("@")[0]
@@ -115,13 +128,31 @@ def auth_return(request):
         # Make sure that the e-mail is unique.
         user = User.objects.get(username=userName)
         #userInfo = UserInfo.objects.get(user=user)
+    elif User.objects.filter(email=google_email):
+        user = User.objects.get(email=google_email)
     else:
         user = User.objects.create(
             username = userName,
             first_name = firstName,
             last_name = lastName,
             email = google_email,
-            password = 'password',
+            password = userName+google_id[:5],
+        )
+
+    #Update the User model with changes in google
+    user.first_name = firstName
+    user.last_name = lastName
+    user.save()
+
+    #Check to see if a google account has been setup yet
+    if not GoogleUserInfo.objects.filter(google_id=google_id):
+        newGoogleUser = GoogleUserInfo.objects.create(
+            user = user,
+            google_id = google_id,
+            googlePlus = googlePlus,
+            language = language,
+            googleAvatar = googleAvatar,
+            gender = gender,
         )
             
     
@@ -178,6 +209,29 @@ def test(request):
     return HttpResponse("Hello, You're in!")
 
 
+def forgotPassword(request, forgotID=False):
+    if forgotID:
+        #check that it has been less than 5 minutes since forgotID was created.
+        if ForgottenPassword.objects.filter(id=forgotID):
+            forgot = ForgottenPassword.objects.get(id=forgotID)
+
+            now = timezone.now()
+            tdelta = now - forgot.dateTime
+            seconds = tdelta.total_seconds()
+
+            if seconds > 300 or forgot.used:
+                return HttpResponse('You reached this link in error.'+str(seconds))
+            else:
+                forgot.used = True
+                forgot.save()
+                return HttpResponse('Reset your password.'+str(forgot.dateTime))
+        else:
+            return HttpResponse('You reached this link in error.')
+
+        #Set the dateTime to 0 so that this link will only work once.
+    else:
+        return HttpResponse('You reached this link in error.')
+
 
 #-------------------------- Ajax calls -------------------------------------------
 def checkUsername(request):
@@ -205,11 +259,7 @@ def submitRegistration(request):
         elif User.objects.filter(email=email):
             data = {'error':'This email is already used with another account.'}
         else:
-            user = User.objects.create(
-                username = username,
-                email = email,
-                password = password,
-            )
+            user = User.objects.create_user(username, email, password)
             
             #check to see if user is logged in
             if user:
@@ -225,10 +275,43 @@ def submitRegistration(request):
     return HttpResponse(json.dumps(data))
 
 
-#ToDo: Allow users to login with username or email
-# During registration add the ajax check for the email already exists
-# Add the forgot username or password
-# Add the separt google account from user
+
+def doesEmailExist(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if User.objects.filter(email=email):
+            data = {'exists':'true'}
+        else:
+            data = {'exists':'false'}
+    else:
+        data = {'error':'Did not post correctly'}
+    return HttpResponse(json.dumps(data))
+
+
+
+
+def submitPasswordForgot(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if User.objects.filter(email=email):
+            user = User.objects.get(email=email)
+            forgotLink = ForgottenPassword.objects.create()
+            send_mail(
+                'Alert from '+ settings.WEBSITENAME,
+                'To reset your password please follow this link:\n\n'+
+                settings.ROOT_WEBSITE_LINK+'/google/forgot/'+ str(forgotLink.id) + '\n\n'+
+                'If you feel this message reached you in error, please disregard or you can email '+ settings.WEBMASTER_EMAIL +' for any questions.',
+                settings.WEBMASTER_EMAIL,
+                [email],
+                fail_silently=False
+            )
+            data = {'exists':'true'}
+        else:
+            data = {'exists':'false'}
+    else:
+        data = {'error':'Did not post correctly'}
+    return HttpResponse(json.dumps(data))
+
 
 
 
