@@ -1,8 +1,9 @@
+{% load staticfiles %}
 
 <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
     
-<link href="/static/google_login/css/google-login-style.css" rel="stylesheet">
+<link href="{% static "google_login/css/google-login-style.css" %}" rel="stylesheet">
 
 <div id="google-login-clicker">Sign In</div>
 <div id="google-login-shade" style="display: none;"></div>
@@ -13,11 +14,11 @@
         <ul>
             <li><div id="google-login-error">incorrect username or password</div></li>
             <li><div class="google-input-holder">
-                    <img src="/static/google_login/images/username_logo.png" alt="user"/>
+                    <img src="{% static "google_login/images/username_logo.png" %}" alt="user"/>
                     <input id="google-username" type="text" name="username" value="" placeholder="Username or email..." autofocus>
             </div></li>
             <li><div class="google-input-holder">
-                    <img src="/static/google_login/images/password_logo.png" alt="user"/>
+                    <img src="{% static "google_login/images/password_logo.png" %}" alt="user"/>
                     <input id="google-password" type="password" name="password" value="" placeholder="Password...">
             </div></li>
             <button id="google-sign-in" class="google-button">SIGN IN</button>
@@ -37,17 +38,17 @@
         <ul>
             <li><div id="username-register-error" class="error-panel"></div></li>
             <li><div class="google-input-holder">
-                    <img src="/static/google_login/images/username_logo.png" alt="user"/>
+                    <img src="{% static "google_login/images/username_logo.png" %}" alt="user"/>
                     <input id="google-register-username" type="text" name="username" value="" placeholder="Username..." autofocus>
             </div></li>
             <li><div id="email-register-error" class="error-panel"></div></li>
             <li><div class="google-input-holder">
-                    <img src="/static/google_login/images/email_logo.png" alt="user"/>
+                    <img src="{% static "google_login/images/email_logo.png" %}" alt="user"/>
                     <input id="google-register-email" type="email" name="email" value="" placeholder="Email...">
             </div></li>
             <li><div id="password-register-error" class="error-panel"></div></li>
             <li><div class="google-input-holder">
-                    <img src="/static/google_login/images/password_logo.png" alt="user"/>
+                    <img src="{% static "google_login/images/password_logo.png" %}" alt="user"/>
                     <input id="google-register-password" type="password" name="password" value="" placeholder="Password...">
             </div></li>
             <button id="google-register-submit" class="google-button">REGISTER</button>
@@ -64,7 +65,7 @@
         <ul>
             <li><div id="email-forgot-error" class="error-panel"></div></li>
             <li><div class="google-input-holder">
-                    <img src="/static/google_login/images/email_logo.png" alt="user"/>
+                    <img src="{% static "google_login/images/email_logo.png" %}" alt="user"/>
                     <input id="google-forgot-email" type="email" name="email" value="" placeholder="Email...">
             </div></li>
             <button id="google-forgot-submit" class="google-button">SEND</button>
@@ -305,7 +306,7 @@ submitPasswordForgot
 </script>
 
 
-<script src="/static/google_login/js/center_google_login.js"></script>
+<script src="{% static "google_login/js/center_google_login.js" %}"></script>
 
 
 

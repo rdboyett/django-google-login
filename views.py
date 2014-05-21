@@ -18,7 +18,7 @@ from django.utils import timezone
 
 from google_login.models import CredentialsModel, GoogleUserInfo, ForgottenPassword
 from google_login import settings
-from forms import MyRegistrationForm
+from forms import ContactForm
 
 from apiclient.discovery import build
 from oauth2client import xsrfutil
@@ -62,35 +62,9 @@ def index(request):
     if not user_id:
         args = {}
         args.update(csrf(request))
-        args['registrationForm'] = MyRegistrationForm()
         #redirect to user login page
         return render_to_response('google_login/login.html', args)
 
-def ajaxAuth(request):
-    if request.method == 'POST':
-        username = request.POST['username'].strip()
-        password = request.POST['password'].strip()
-        user = authenticate(username=username, password=password)
-
-        if user is None and User.objects.filter(email=username):
-            userEmail = User.objects.get(email=username)
-            user = authenticate(username=userEmail.username, password=password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                request.session['user_id'] = user.id
-                request.session.set_expiry(604800)
-                data = {'success':'success'}
-            else:
-                data = {'error':'<div class="google-login-error">incorrect username or password</div>'}
-        else:
-			data = {'error':'<div class="google-login-error">incorrect username or password</div>'}
-    
-    return HttpResponse(json.dumps(data))
-    
-    
-    
     
 def auth(request):
     
@@ -219,12 +193,16 @@ def forgotPassword(request, forgotID=False):
             tdelta = now - forgot.dateTime
             seconds = tdelta.total_seconds()
 
-            if seconds > 300 or forgot.used:
+            if not seconds:# > 300 or forgot.used:
                 return HttpResponse('You reached this link in error.'+str(seconds))
             else:
                 forgot.used = True
                 forgot.save()
-                return HttpResponse('Reset your password.'+str(forgot.dateTime))
+
+                args = {}
+                args.update(csrf(request))
+                args['passwordForm'] = ContactForm()
+                return render_to_response('google_login/change_password.html', args)
         else:
             return HttpResponse('You reached this link in error.')
 
@@ -233,7 +211,49 @@ def forgotPassword(request, forgotID=False):
         return HttpResponse('You reached this link in error.')
 
 
+def passwordReset(request):
+    return HttpResponse('You reached this link.')
+
+
+
+
+
+
+
+
+
+
+
+
 #-------------------------- Ajax calls -------------------------------------------
+
+def ajaxAuth(request):
+    if request.method == 'POST':
+        username = request.POST['username'].strip()
+        password = request.POST['password'].strip()
+        user = authenticate(username=username, password=password)
+
+        if user is None and User.objects.filter(email=username):
+            userEmail = User.objects.get(email=username)
+            user = authenticate(username=userEmail.username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                request.session['user_id'] = user.id
+                request.session.set_expiry(604800)
+                data = {'success':'success'}
+            else:
+                data = {'error':'<div class="google-login-error">incorrect username or password</div>'}
+        else:
+			data = {'error':'<div class="google-login-error">incorrect username or password</div>'}
+    
+    return HttpResponse(json.dumps(data))
+    
+    
+    
+
+
 def checkUsername(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -296,16 +316,19 @@ def submitPasswordForgot(request):
         if User.objects.filter(email=email):
             user = User.objects.get(email=email)
             forgotLink = ForgottenPassword.objects.create()
-            send_mail(
-                'Alert from '+ settings.WEBSITENAME,
-                'To reset your password please follow this link:\n\n'+
-                settings.ROOT_WEBSITE_LINK+'/google/forgot/'+ str(forgotLink.id) + '\n\n'+
-                'If you feel this message reached you in error, please disregard or you can email '+ settings.WEBMASTER_EMAIL +' for any questions.',
-                settings.WEBMASTER_EMAIL,
-                [email],
-                fail_silently=False
-            )
-            data = {'exists':'true'}
+            try:
+                send_mail(
+                    'Alert from '+ settings.WEBSITENAME,
+                    'To reset your password please follow this link:\n\n'+
+                    settings.ROOT_WEBSITE_LINK+'/google/forgot/'+ str(forgotLink.id) + '\n\n'+
+                    'If you feel this message reached you in error, please disregard or you can email '+ settings.WEBMASTER_EMAIL +' for any questions.',
+                    settings.WEBMASTER_EMAIL,
+                    [email],
+                    fail_silently=False
+                )
+                data = {'exists':'true'}
+            except:
+                data = {'error':'Your server email settings have not been set.  Please read the requirements text.'}
         else:
             data = {'exists':'false'}
     else:

@@ -11,6 +11,7 @@ urlpatterns += patterns('google_login.views',
     (r'^success/$', 'success'),
     (r'^error/$', 'error'),
     (r'^forgot/(?P<forgotID>\d+)/$', 'forgotPassword'),
+    (r'^passwordReset/$', 'passwordReset'),
 
 #------------------ajax calls -------------------------------------
     url(r'^ajaxAuth/$', 'ajaxAuth', name='ajaxAuth'),

@@ -6,7 +6,7 @@ change settings in "google_login.settings" for your project
 Add the following to your root urls:
 url(r'^google/', include('google_login.urls')),
 
-
+// Place this in your project settings.py
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'example@gmail.com'
 EMAIL_HOST_PASSWORD = 'yourpassword'
