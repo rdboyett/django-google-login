@@ -2,7 +2,7 @@ import os
 ROOT_PATH = os.path.dirname(__file__)
 
 #place your goole client_secrects.json download in the same directory as this file.
-CLIENT_SECRETS = os.path.join(ROOT_PATH,'client_secrets.json')
+CLIENT_SECRETS = os.path.join(ROOT_PATH,'..', 'client_secrets.json')
 
 #Add any scopes that you want access to in the credentials file
 SCOPES = [
