@@ -6,6 +6,8 @@ CLIENT_SECRETS = os.path.join(ROOT_PATH,'..', 'client_secrets.json')
 
 #Add any scopes that you want access to in the credentials file
 SCOPES = [
+    'https://www.googleapis.com/auth/drive.install',
+    'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
     # Add other requested scopes.
@@ -15,7 +17,7 @@ SCOPES = [
 redirect_uri='http://127.0.0.1:8000/google/oauth2callback'
 
 #Login Success redirect
-LOGIN_SUCCESS = '/google/success/'
+LOGIN_SUCCESS = '/dashboard/'
 
 #change to any random hashed sequence
 SECRET_KEY = 't(641aasfrv6^^-1sj$uzq(fskmd%+!33199$axb1hu(2i_2n='

@@ -1,11 +1,21 @@
+{% extends 'small-base.html' %}
 {% load staticfiles %}
 
+{% block title %}Sign In{% endblock %}
+
+
+
+{% block extraHead %}
 <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
     
 <link href="{% static "google_login/css/google-login-style.css" %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static "main_project/css/dashboard-style.css" %}" />
+{% endblock %}
 
-<div id="google-login-clicker">Sign In</div>
+{% block body %}
+
+
 <div id="google-login-shade" style="display: none;"></div>
 <div id="google_login_form" style="display: none;">
     <div class="google-login-title">Account Login</div>
@@ -310,6 +320,7 @@ submitPasswordForgot
 
 
 
+{% endblock %}
 
 
 

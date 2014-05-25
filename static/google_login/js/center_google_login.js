@@ -1,15 +1,23 @@
 
 $(document).ready(function(){
     resizeGoogleLoginPopup();
-    
+    /*
     $("#google-login-clicker").unbind('click').click(function(){
         $("#google-login-shade").fadeIn(600);
         $("#google_login_form").fadeIn(600);
     });
+    */
+
+        $("#google-login-shade").fadeIn(600);
+        $("#google_login_form").fadeIn(600);
+    
     
     $("#google-login-shade").unbind('click').click(function(){
-        $("#google-login-shade").fadeOut(600);
-        $("#google_login_form").fadeOut(600);
+        //$("#google-login-shade").fadeOut(600);
+        //$("#google_login_form").fadeOut(600);
+        if ($("#google_login_form").is(":visible") == false){
+            $("#google_login_form").fadeIn(600);
+        }
         $("#google_register_form").fadeOut(600);
         $("#google_forgot_form").fadeOut(600);
     });
