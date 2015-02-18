@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
-    (r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': '/google/login'}),
+    (r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': '/logoutSuccess'}),
 )
 
 urlpatterns += patterns('google_login.views',

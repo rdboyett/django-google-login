@@ -12,13 +12,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
-from django.utils import simplejson
 from django.core.mail import send_mail
 from django.utils import timezone
 
 from google_login.models import CredentialsModel, GoogleUserInfo, ForgottenPassword
 from google_login import settings
 from forms import ContactForm
+from directory_app.models import UserInfo
 
 from apiclient.discovery import build
 from oauth2client import xsrfutil
@@ -91,9 +91,7 @@ def auth_return(request):
     lastName = user_info.get('family_name')
     google_id = user_info.get('id')
     googlePlus = user_info.get('link')
-    language = user_info.get('locale')
     googleAvatar = user_info.get('picture')
-    gender = user_info.get('gender')
         
     emailEnding = google_email.split("@")[1]
     userName = "@"+google_email.split("@")[0]
@@ -105,14 +103,36 @@ def auth_return(request):
     elif User.objects.filter(email=google_email):
         user = User.objects.get(email=google_email)
     else:
-        user = User.objects.create(
-            username = userName,
-            first_name = firstName,
-            last_name = lastName,
-            email = google_email,
-            password = userName+google_id[:5],
+        if 'alvaradoisd.net' in emailEnding:
+            if 'student' in emailEnding:
+                return HttpResponse('Please sign in with a Alvarado ISD Teacher account.')
+            else:
+                bTeacher = True
+            
+		user = User.objects.create(
+		    username = userName,
+		    first_name = firstName,
+		    last_name = lastName,
+		    email = google_email,
+		    password = userName+google_id[:5],
+		)
+	else:
+	    return HttpResponse('Please sign in with a Alvarado ISD account.')
+    
+    if not UserInfo.objects.filter(email=google_email):
+        userInfo = UserInfo.objects.create(
+            google_id = google_id,
+            user = user,
+	    firstName = firstName,
+	    lastName = lastName,
+	    email = google_email,
         )
-
+    else:
+        userInfo = UserInfo.objects.get(email=google_email)
+        userInfo.google_id = google_id
+        userInfo.user = user
+        userInfo.save()
+    
     #Update the User model with changes in google
     user.first_name = firstName
     user.last_name = lastName
@@ -124,9 +144,7 @@ def auth_return(request):
             user = user,
             google_id = google_id,
             googlePlus = googlePlus,
-            language = language,
             googleAvatar = googleAvatar,
-            gender = gender,
         )
             
     
